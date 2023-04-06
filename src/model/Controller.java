@@ -1,13 +1,13 @@
 package model;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+
 
 public class Controller {
 
 	private static final int MAX_PROYECTS = 10;
 	private int projectCounter;
-	private Project[] projects;
+	public Project[] projects;
 
 	public Controller() {
 
@@ -26,14 +26,17 @@ public class Controller {
 
 	public boolean registerProject(String projectName, String clientName, String type, Calendar initialDate, Calendar finalDate, double budget){
 		
+		boolean isRegisteredProject = false;
 		Project project = new Project(projectName, clientName, type, initialDate, finalDate, budget);
 		int pos = getFirstValidPosition();
 		if(pos != -1){
 			projects[pos]= project;
+			isRegisteredProject = true;
+			projectCounter++;
 		}
-		projectCounter++;
+		
 
-		return false;
+		return isRegisteredProject;
 	}
 
 	public int getFirstValidPosition(){
@@ -56,7 +59,8 @@ public class Controller {
 		for(int i = 0; i<MAX_PROYECTS; i++){
 			if(projects[i] != null){
 				if(date.compareTo(projects[i].getFinalDate())>0){
-					msg += ("Proyect's name: "+projects[i].getName());
+					msg = "";
+					msg += ("\nProyect's name: "+projects[i].getName());
 				}
 			}
 		}
@@ -72,8 +76,9 @@ public class Controller {
 
 		for(int i = 0; i<MAX_PROYECTS; i++){
 			if(projects[i] != null){
-				if(date.compareTo(projects[i].getFinalDate())<0){
-					msg += ("Proyect's name: "+projects[i].getName());
+				if(date.compareTo(projects[i].getInitialDate())<0){
+					msg = "";
+					msg += ("\nProyect's name: "+projects[i].getName());
 				}
 			}
 		}

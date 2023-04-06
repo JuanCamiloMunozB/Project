@@ -5,7 +5,7 @@ import model.Controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+
 
 import java.text.ParseException;
 
@@ -36,6 +36,7 @@ public class Main{
 
 	// Incomplete
 	public void menu() {
+		System.out.println("\n---Menu---");
 		System.out.println("0. Exit");
 		System.out.println("1. Register new Project");
 		System.out.println("2. Consult Projects that end before a certain date");
@@ -62,6 +63,7 @@ public class Main{
 
 			default:
 			System.out.println("Invalid option. Please, try again. ");
+			break;
 		}
 	}
 
@@ -80,12 +82,10 @@ public class Main{
 			System.out.println("The maximun amount of proyects posible has alredy been reached");
 		}else{
 			System.out.print("Type the project's name: ");
-			projectName = reader.nextLine();
-			reader.next();
+			projectName = reader.next();
 
 			System.out.print("Type the client's name: ");
-			clientName = reader.nextLine();
-			reader.next();
+			clientName = reader.next();
 
 			type = validateProjectsType("\nType the project's type ");
 
@@ -95,7 +95,11 @@ public class Main{
 			System.out.print("\nType the project's budget: ");
 			budget = reader.nextDouble();
 
-			controller.registerProject(projectName, clientName, type, initialDate, finalDate, budget);
+			boolean isProjecRegistered = controller.registerProject(projectName, clientName, type, initialDate, finalDate, budget);
+
+			if(isProjecRegistered == true){
+				System.out.println("The project was registered succesfully");
+			}
 		}
 	}
 
@@ -110,12 +114,12 @@ public class Main{
 	public void searchProjectsBeforeDate() {
 		Calendar foreCast = readDate("Enter the Forecasts");
 
-		controller.searchProjectsBeforeDate(foreCast);	
+		System.out.println(controller.searchProjectsBeforeDate(foreCast));
 	}
 
 
 	public void typeMenu(){
-		System.out.println("valid options:");
+		System.out.println("-valid options:");
 		System.out.println("1. Development");
 		System.out.println("2. maintenance");
 		System.out.println("3. Deployment");
@@ -154,22 +158,23 @@ public class Main{
 
 	public Calendar readDate(String msg){
 		
-		Calendar calendarTime = new GregorianCalendar();
+		Calendar calendarTime = Calendar.getInstance();
 		String date = "";
 		boolean isDateSet;
+
 		do{
-		isDateSet = false;
-		System.out.println(msg); 
-		System.out.println("The date must follow the format: dd/M/yy");
-		System.out.print("Type the date: ");
-		date = reader.next();
-		
-		try {
-			calendarTime.setTime(format.parse(date));
-			isDateSet= true;
-		} catch (ParseException error) {
-			System.out.println("Invalid option. Please, try again");
-		}
+			isDateSet = false;
+			System.out.println(msg); 
+			System.out.println("The date must follow the format: dd/M/yyyy");
+			System.out.print("Type the date: ");
+			date = reader.next();
+			
+			try {
+				calendarTime.setTime(format.parse(date));
+				isDateSet= true;
+			} catch (ParseException error) {
+				System.out.println("Invalid option. Please, try again");
+			}
 		}while(isDateSet == false);
 		
 		return calendarTime;
